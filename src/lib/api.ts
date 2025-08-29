@@ -1,11 +1,11 @@
 import { users, setores, secoes, funcionarioProfiles, feedbacks, atividadesObservadas, atributosDeDesempenho, tiposOcorrencia } from './mock-data';
-import { User, Feedback, AtividadeObservada } from './types';
+import { User, Feedback, AtividadeObservada, FuncionarioComDetalhes } from './types';
 
 // Helper to get user by ID
 const getUserById = (id: string) => users.find(u => u.id === id);
 
 // Helper to get full profile for a user
-const getFullEmployeeProfile = (user: User) => {
+const getFullEmployeeProfile = (user: User): FuncionarioComDetalhes => {
   if (user.role !== 'Funcionario') return { ...user };
 
   const profile = funcionarioProfiles.find(p => p.usuarioId === user.id);
@@ -116,10 +116,15 @@ export const getManagementData = () => {
   const leaders = users.filter(u => u.role === 'Lider');
   const employees = users.filter(u => u.role === 'Funcionario');
 
-  const leadersWithTeams = leaders.map(leader => ({
-    ...leader,
-    team: getTeamByLeaderId(leader.id),
-  }));
+  const leadersWithTeams = leaders.map(leader => {
+    const team = getTeamByLeaderId(leader.id);
+    const setor = team.length > 0 ? team[0].setor : undefined;
+    return {
+      ...leader,
+      team: team,
+      setor: setor,
+    };
+  });
 
   const employeesWithDetails = employees.map(emp => getFullEmployeeProfile(emp));
 

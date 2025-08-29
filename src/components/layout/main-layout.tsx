@@ -1,5 +1,5 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
-import { CircleUser, Home, Users, MessageSquare, Settings, Building2 } from 'lucide-react';
+import { CircleUser, Home, Users, MessageSquare, Settings, Building2, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -9,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const navLinks = [
   { to: '/leader/dashboard', icon: Home, label: 'Dashboard' },
@@ -50,7 +51,36 @@ export function MainLayout() {
       </div>
       <div className="flex flex-col">
         <header className="flex h-14 items-center gap-4 border-b bg-muted/40 px-4 lg:h-[60px] lg:px-6">
-          {/* Mobile Nav can be added here */}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="outline" size="icon" className="shrink-0 md:hidden">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Toggle navigation menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="flex flex-col">
+              <nav className="grid gap-2 text-lg font-medium">
+                <Link to="/" className="flex items-center gap-2 text-lg font-semibold mb-4">
+                  <Settings className="h-6 w-6" />
+                  <span className="">Painel Retail</span>
+                </Link>
+                {navLinks.map(({ to, icon: Icon, label }) => (
+                  <NavLink
+                    key={to}
+                    to={to}
+                    className={({ isActive }) =>
+                      `flex items-center gap-4 rounded-xl px-3 py-2 text-muted-foreground hover:text-foreground ${
+                        isActive ? 'bg-muted text-foreground' : ''
+                      }`
+                    }
+                  >
+                    <Icon className="h-5 w-5" />
+                    {label}
+                  </NavLink>
+                ))}
+              </nav>
+            </SheetContent>
+          </Sheet>
           <div className="w-full flex-1">
             {/* Header content like a search bar can go here */}
           </div>
@@ -71,7 +101,7 @@ export function MainLayout() {
             </DropdownMenuContent>
           </DropdownMenu>
         </header>
-        <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-background">
+        <main className="flex flex-1 flex-col gap-4 p-2 sm:p-4 lg:gap-6 lg:p-6 bg-background">
           <Outlet />
         </main>
       </div>

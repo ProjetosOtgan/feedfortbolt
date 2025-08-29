@@ -1,9 +1,11 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { User } from "@/lib/types";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Lider } from '@/lib/types';
+import { Users } from 'lucide-react';
 
 interface LideresEquipesCardProps {
-  lideres: (User & { team: any[] })[];
+  lideres: Lider[];
 }
 
 export function LideresEquipesCard({ lideres }: LideresEquipesCardProps) {
@@ -11,38 +13,58 @@ export function LideresEquipesCard({ lideres }: LideresEquipesCardProps) {
     <Card>
       <CardHeader>
         <CardTitle>Líderes e Equipes</CardTitle>
-        <CardDescription>Visualize os líderes e os membros de suas equipes.</CardDescription>
+        <CardDescription>Visualize os líderes e o tamanho de suas equipes.</CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
-        {lideres.map(lider => (
-          <div key={lider.id} className="p-4 border rounded-lg">
-            <div className="flex items-center gap-4">
-              <Avatar>
-                <AvatarImage src={lider.avatarUrl} />
-                <AvatarFallback>{lider.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-              <div>
-                <h3 className="font-semibold text-lg">{lider.name}</h3>
-                <p className="text-sm text-muted-foreground">{lider.email}</p>
+      <CardContent>
+        {/* Mobile View */}
+        <div className="md:hidden space-y-4">
+          {(lideres || []).map(lider => (
+            <div key={lider.id} className="p-4 border rounded-lg">
+              <div className="flex items-center space-x-4">
+                <Avatar className="h-12 w-12">
+                  <AvatarImage src={lider.avatarUrl} alt={lider.name} />
+                  <AvatarFallback>{lider.name?.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <div className="flex-1 space-y-1">
+                  <p className="font-medium text-primary">{lider.name}</p>
+                  <p className="text-sm text-muted-foreground flex items-center">
+                    <Users className="h-4 w-4 mr-2" />
+                    {lider.team?.length || 0} membros
+                  </p>
+                </div>
               </div>
             </div>
-            <div className="mt-4">
-              <h4 className="font-semibold">Equipe:</h4>
-              <div className="flex flex-wrap gap-4 mt-2">
-                {lider.team.map(member => (
-                  <div key={member.id} className="flex items-center gap-2 p-2 bg-muted rounded-md">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={member.avatarUrl} />
-                      <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
+          ))}
+        </div>
+
+        {/* Desktop View */}
+        <div className="hidden md:block">
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-[100px]">Avatar</TableHead>
+                <TableHead>Nome do Líder</TableHead>
+                <TableHead>Tamanho da Equipe</TableHead>
+                <TableHead>Setor</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {(lideres || []).map(lider => (
+                <TableRow key={lider.id}>
+                  <TableCell>
+                    <Avatar className="h-10 w-10">
+                      <AvatarImage src={lider.avatarUrl} alt={lider.name} />
+                      <AvatarFallback>{lider.name?.charAt(0)}</AvatarFallback>
                     </Avatar>
-                    <span className="text-sm font-medium">{member.name}</span>
-                  </div>
-                ))}
-                {lider.team.length === 0 && <p className="text-sm text-muted-foreground">Nenhum funcionário na equipe.</p>}
-              </div>
-            </div>
-          </div>
-        ))}
+                  </TableCell>
+                  <TableCell className="font-medium">{lider.name}</TableCell>
+                  <TableCell>{lider.team?.length || 0} membros</TableCell>
+                  <TableCell>{lider.setor?.name || 'N/A'}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
       </CardContent>
     </Card>
   );

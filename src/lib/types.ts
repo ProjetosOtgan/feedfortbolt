@@ -66,3 +66,15 @@ export interface TipoOcorrencia {
   id: string;
   tipo: string;
 }
+
+export interface FuncionarioComDetalhes extends User {
+  profile?: FuncionarioProfile;
+  secao?: Secao;
+  setor?: Setor;
+  lider?: User;
+}
+
+export interface Lider extends User {
+  team: FuncionarioComDetalhes[];
+  setor?: Setor;
+}

@@ -10,11 +10,11 @@ export function ManagementPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Gestão</h1>
+        <h1 className="text-2xl font-bold md:text-3xl">Gestão</h1>
         <p className="text-muted-foreground">Gerencie setores, equipes e funcionários.</p>
       </div>
       <Tabs defaultValue="setores" className="w-full">
-        <TabsList className="grid w-full grid-cols-3">
+        <TabsList className="grid w-full grid-cols-1 sm:grid-cols-3 h-auto sm:h-10">
           <TabsTrigger value="setores">Setores & Seções</TabsTrigger>
           <TabsTrigger value="lideres">Líderes & Equipes</TabsTrigger>
           <TabsTrigger value="funcionarios">Funcionários</TabsTrigger>
@@ -28,7 +28,7 @@ export function ManagementPage() {
         <TabsContent value="funcionarios">
           <FuncionariosCard 
             funcionarios={data.funcionarios}
-            lideres={data.lideres.map(l => l)}
+            lideres={data.lideres}
             secoes={data.setores.flatMap(s => s.secoes)}
           />
         </TabsContent>

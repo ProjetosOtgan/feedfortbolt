@@ -25,11 +25,11 @@ export function LeaderDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <h1 className="text-2xl font-bold md:text-3xl">Dashboard</h1>
         <p className="text-muted-foreground">Bem-vindo ao seu painel de líder.</p>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Membros da Equipe</CardTitle>
@@ -72,13 +72,13 @@ export function LeaderDashboard() {
         </Card>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4">
+      <div className="grid gap-4 md:grid-cols-1 lg:grid-cols-7">
+        <Card className="lg:col-span-4">
           <CardHeader>
             <CardTitle>Visão Geral do Desempenho da Equipe</CardTitle>
           </CardHeader>
           <CardContent className="pl-2">
-            <ResponsiveContainer width="100%" height={350}>
+            <ResponsiveContainer width="100%" height={300}>
               <BarChart data={chartData}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" stroke="#888888" fontSize={12} tickLine={false} axisLine={false} />
@@ -90,7 +90,7 @@ export function LeaderDashboard() {
             </ResponsiveContainer>
           </CardContent>
         </Card>
-        <Card className="col-span-3">
+        <Card className="lg:col-span-3">
           <CardHeader>
             <CardTitle>Atividades Recentes</CardTitle>
             <CardDescription>Você deu {data.recentFeedbacks.length} feedbacks recentemente.</CardDescription>
@@ -98,16 +98,16 @@ export function LeaderDashboard() {
           <CardContent>
             <div className="space-y-4">
               {data.recentFeedbacks.map(feedback => (
-                <div key={feedback.id} className="flex items-center">
-                  <Avatar className="h-9 w-9">
+                <div key={feedback.id} className="flex items-start space-x-4">
+                  <Avatar className="h-9 w-9 flex-shrink-0">
                     <AvatarImage src={feedback.funcionario?.avatarUrl} alt="Avatar" />
                     <AvatarFallback>{feedback.funcionario?.name.charAt(0)}</AvatarFallback>
                   </Avatar>
-                  <div className="ml-4 space-y-1">
+                  <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium leading-none">{feedback.funcionario?.name}</p>
                     <p className="text-sm text-muted-foreground truncate">{feedback.comentarioQualitativo}</p>
                   </div>
-                  <div className="ml-auto font-medium text-sm text-muted-foreground">
+                  <div className="ml-auto text-right flex-shrink-0 font-medium text-sm text-muted-foreground">
                     {format(new Date(feedback.data), "dd 'de' MMM", { locale: ptBR })}
                   </div>
                 </div>
